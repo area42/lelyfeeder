@@ -26,7 +26,7 @@ KAFKA_BROKER=localhost:9092
 # overwritten options
 while getopts "z:b:" option
 do
-  case ${option} in 
+  case ${option} in
     z) ZOOKEEPER="${OPTARG}";;
     b) KAFKA_BROKER="${OPTARG}";;
   esac
@@ -43,7 +43,6 @@ fi
 
 # produce raw data
 while sleep 1
-do 
+do
   $BASE_DIR/deploy/kafka/bin/kafka-console-producer.sh < $BASE_DIR/wikipedia-raw.json --topic wikipedia-raw --broker $KAFKA_BROKER
 done
-

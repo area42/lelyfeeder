@@ -48,4 +48,3 @@ To use gradle to build/run the hello-samza project:
 	$ ./gradlew stopGrid
 
 Shortcut: using the 'runWiki*' tasks directly will do steps 3-6 automatically.
-

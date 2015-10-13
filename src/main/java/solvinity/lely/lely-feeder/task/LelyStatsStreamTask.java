@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package samza.examples.wikipedia.task;
+package solvinity.lely.lely-feeder.task;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ import org.apache.samza.task.TaskContext;
 import org.apache.samza.task.TaskCoordinator;
 import org.apache.samza.task.WindowableTask;
 
-public class WikipediaStatsStreamTask implements StreamTask, InitableTask, WindowableTask {
+public class LelyStatsStreamTask implements StreamTask, InitableTask, WindowableTask {
   private int edits = 0;
   private int byteDiff = 0;
   private Set<String> titles = new HashSet<String>();
@@ -43,7 +43,7 @@ public class WikipediaStatsStreamTask implements StreamTask, InitableTask, Windo
   private KeyValueStore<String, Integer> store;
 
   public void init(Config config, TaskContext context) {
-    this.store = (KeyValueStore<String, Integer>) context.getStore("wikipedia-stats");
+    this.store = (KeyValueStore<String, Integer>) context.getStore("Lely-stats");
   }
 
   @SuppressWarnings("unchecked")
@@ -81,7 +81,7 @@ public class WikipediaStatsStreamTask implements StreamTask, InitableTask, Windo
     counts.put("unique-titles", titles.size());
     counts.put("edits-all-time", store.get("count-edits-all-time"));
 
-    collector.send(new OutgoingMessageEnvelope(new SystemStream("kafka", "wikipedia-stats"), counts));
+    collector.send(new OutgoingMessageEnvelope(new SystemStream("kafka", "Lely-stats"), counts));
 
     // Reset counts after windowing.
     edits = 0;

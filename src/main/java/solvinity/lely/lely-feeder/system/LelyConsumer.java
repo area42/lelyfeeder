@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package samza.examples.wikipedia.system;
+package solvinity.lely.lely-feeder.system;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +26,21 @@ import org.apache.samza.metrics.MetricsRegistry;
 import org.apache.samza.system.IncomingMessageEnvelope;
 import org.apache.samza.system.SystemStreamPartition;
 import org.apache.samza.util.BlockingEnvelopeMap;
-import samza.examples.wikipedia.system.WikipediaFeed.WikipediaFeedEvent;
-import samza.examples.wikipedia.system.WikipediaFeed.WikipediaFeedListener;
+import solvinity.lely.lely-feeder.system.LelyFeed.LelyFeedEvent;
+import solvinity.lely.lely-feeder.system.LelyFeed.LelyFeedListener;
 
-public class WikipediaConsumer extends BlockingEnvelopeMap implements WikipediaFeedListener {
+public class LelyConsumer extends BlockingEnvelopeMap implements LelyFeedListener {
   private final List<String> channels;
   private final String systemName;
-  private final WikipediaFeed feed;
+  private final LelyFeed feed;
 
-  public WikipediaConsumer(String systemName, WikipediaFeed feed, MetricsRegistry registry) {
+  public LelyConsumer(String systemName, LelyFeed feed, MetricsRegistry registry) {
     this.channels = new ArrayList<String>();
     this.systemName = systemName;
     this.feed = feed;
   }
 
-  public void onEvent(final WikipediaFeedEvent event) {
+  public void onEvent(final LelyFeedEvent event) {
     SystemStreamPartition systemStreamPartition = new SystemStreamPartition(systemName, event.getChannel(), new Partition(0));
 
     try {

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package samza.examples.wikipedia.system;
+package solvinity.lely.lely-feeder.system;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,24 +34,24 @@ import org.schwering.irc.lib.IRCUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WikipediaFeed {
-  private static final Logger log = LoggerFactory.getLogger(WikipediaFeed.class);
+public class LelyFeed {
+  private static final Logger log = LoggerFactory.getLogger(LelyFeed.class);
   private static final Random random = new Random();
   private static final ObjectMapper jsonMapper = new ObjectMapper();
 
-  private final Map<String, Set<WikipediaFeedListener>> channelListeners;
+  private final Map<String, Set<LelyFeedListener>> channelListeners;
   private final String host;
   private final int port;
   private final IRCConnection conn;
   private final String nick;
 
-  public WikipediaFeed(String host, int port) {
-    this.channelListeners = new HashMap<String, Set<WikipediaFeedListener>>();
+  public LelyFeed(String host, int port) {
+    this.channelListeners = new HashMap<String, Set<LelyFeedListener>>();
     this.host = host;
     this.port = port;
     this.nick = "samza-bot-" + Math.abs(random.nextInt());
     this.conn = new IRCConnection(host, new int[] { port }, "", nick, nick, nick);
-    this.conn.addIRCEventListener(new WikipediaFeedIrcListener());
+    this.conn.addIRCEventListener(new LelyFeedIrcListener());
     this.conn.setEncoding("UTF-8");
     this.conn.setPong(true);
     this.conn.setColors(false);
@@ -79,11 +79,11 @@ public class WikipediaFeed {
     }
   }
 
-  public void listen(String channel, WikipediaFeedListener listener) {
-    Set<WikipediaFeedListener> listeners = channelListeners.get(channel);
+  public void listen(String channel, LelyFeedListener listener) {
+    Set<LelyFeedListener> listeners = channelListeners.get(channel);
 
     if (listeners == null) {
-      listeners = new HashSet<WikipediaFeedListener>();
+      listeners = new HashSet<LelyFeedListener>();
       channelListeners.put(channel, listeners);
       join(channel);
     }
@@ -91,8 +91,8 @@ public class WikipediaFeed {
     listeners.add(listener);
   }
 
-  public void unlisten(String channel, WikipediaFeedListener listener) {
-    Set<WikipediaFeedListener> listeners = channelListeners.get(channel);
+  public void unlisten(String channel, LelyFeedListener listener) {
+    Set<LelyFeedListener> listeners = channelListeners.get(channel);
 
     if (listeners == null) {
       throw new RuntimeException("Trying to unlisten to a channel that has no listeners in it.");
@@ -115,7 +115,7 @@ public class WikipediaFeed {
     conn.send("PART " + channel);
   }
 
-  public class WikipediaFeedIrcListener implements IRCEventListener {
+  public class LelyFeedIrcListener implements IRCEventListener {
     public void onRegistered() {
       log.info("Connected");
     }
@@ -165,12 +165,12 @@ public class WikipediaFeed {
     }
 
     public void onPrivmsg(String chan, IRCUser u, String msg) {
-      Set<WikipediaFeedListener> listeners = channelListeners.get(chan);
+      Set<LelyFeedListener> listeners = channelListeners.get(chan);
 
       if (listeners != null) {
-        WikipediaFeedEvent event = new WikipediaFeedEvent(System.currentTimeMillis(), chan, u.getNick(), msg);
+        LelyFeedEvent event = new LelyFeedEvent(System.currentTimeMillis(), chan, u.getNick(), msg);
 
-        for (WikipediaFeedListener listener : listeners) {
+        for (LelyFeedListener listener : listeners) {
           listener.onEvent(event);
         }
       }
@@ -198,24 +198,24 @@ public class WikipediaFeed {
     }
   }
 
-  public static interface WikipediaFeedListener {
-    void onEvent(WikipediaFeedEvent event);
+  public static interface LelyFeedListener {
+    void onEvent(LelyFeedEvent event);
   }
 
-  public static final class WikipediaFeedEvent {
+  public static final class LelyFeedEvent {
     private final long time;
     private final String channel;
     private final String source;
     private final String rawEvent;
 
-    public WikipediaFeedEvent(long time, String channel, String source, String rawEvent) {
+    public LelyFeedEvent(long time, String channel, String source, String rawEvent) {
       this.time = time;
       this.channel = channel;
       this.source = source;
       this.rawEvent = rawEvent;
     }
 
-    public WikipediaFeedEvent(Map<String, Object> jsonObject) {
+    public LelyFeedEvent(Map<String, Object> jsonObject) {
       this((Long) jsonObject.get("time"), (String) jsonObject.get("channel"), (String) jsonObject.get("source"), (String) jsonObject.get("raw"));
     }
 
@@ -254,7 +254,7 @@ public class WikipediaFeed {
         return false;
       if (getClass() != obj.getClass())
         return false;
-      WikipediaFeedEvent other = (WikipediaFeedEvent) obj;
+      LelyFeedEvent other = (LelyFeedEvent) obj;
       if (channel == null) {
         if (other.channel != null)
           return false;
@@ -277,14 +277,14 @@ public class WikipediaFeed {
 
     @Override
     public String toString() {
-      return "WikipediaFeedEvent [time=" + time + ", channel=" + channel + ", source=" + source + ", rawEvent=" + rawEvent + "]";
+      return "LelyFeedEvent [time=" + time + ", channel=" + channel + ", source=" + source + ", rawEvent=" + rawEvent + "]";
     }
 
     public String toJson() {
       return toJson(this);
     }
 
-    public static Map<String, Object> toMap(WikipediaFeedEvent event) {
+    public static Map<String, Object> toMap(LelyFeedEvent event) {
       Map<String, Object> jsonObject = new HashMap<String, Object>();
 
       jsonObject.put("time", event.getTime());
@@ -295,7 +295,7 @@ public class WikipediaFeed {
       return jsonObject;
     }
 
-    public static String toJson(WikipediaFeedEvent event) {
+    public static String toJson(LelyFeedEvent event) {
       Map<String, Object> jsonObject = toMap(event);
 
       try {
@@ -306,9 +306,9 @@ public class WikipediaFeed {
     }
 
     @SuppressWarnings("unchecked")
-    public static WikipediaFeedEvent fromJson(String json) {
+    public static LelyFeedEvent fromJson(String json) {
       try {
-        return new WikipediaFeedEvent((Map<String, Object>) jsonMapper.readValue(json, Map.class));
+        return new LelyFeedEvent((Map<String, Object>) jsonMapper.readValue(json, Map.class));
       } catch (Exception e) {
         throw new SamzaException(e);
       }
@@ -316,12 +316,12 @@ public class WikipediaFeed {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    WikipediaFeed feed = new WikipediaFeed("irc.wikimedia.org", 6667);
+    LelyFeed feed = new LelyFeed("irc.wikimedia.org", 6667);
     feed.start();
 
-    feed.listen("#en.wikipedia", new WikipediaFeedListener() {
+    feed.listen("#en.Lely", new LelyFeedListener() {
       @Override
-      public void onEvent(WikipediaFeedEvent event) {
+      public void onEvent(LelyFeedEvent event) {
         System.out.println(event);
       }
     });

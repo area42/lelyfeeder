@@ -31,7 +31,7 @@ under the License.
   <packaging>jar</packaging>
   <name>Lely Feeder</name>
   <description>
-    Read from an incoming feed of json files, store them partioned by some key. 
+    Read from an incoming feed of json files, store them partioned by some key.
   </description>
   <url>https://solvinity.com/</url>
 

@@ -16,7 +16,7 @@
 # under the License.
 
 REVIEWBOARD_URL = 'https://reviews.apache.org'
-REPOSITORY = 'samza-hello-samza'
+REPOSITORY = ''
 GUESS_DESCRIPTION = True
-TARGET_GROUPS = 'samza'
+TARGET_GROUPS = ''
 TRACKING_BRANCH = 'origin/master'

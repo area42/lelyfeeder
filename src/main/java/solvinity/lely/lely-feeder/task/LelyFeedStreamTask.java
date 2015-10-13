@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package samza.examples.wikipedia.task;
+package solvinity.lely.lely-feeder.task;
 
 import java.util.Map;
 import org.apache.samza.system.IncomingMessageEnvelope;
@@ -26,18 +26,18 @@ import org.apache.samza.system.SystemStream;
 import org.apache.samza.task.MessageCollector;
 import org.apache.samza.task.StreamTask;
 import org.apache.samza.task.TaskCoordinator;
-import samza.examples.wikipedia.system.WikipediaFeed.WikipediaFeedEvent;
+import solvinity.lely.lely-feeder.system.LelyFeed.LelyFeedEvent;
 
 /**
  * This task is very simple. All it does is take messages that it receives, and
- * sends them to a Kafka topic called wikipedia-raw.
+ * sends them to a Kafka topic called Lely-raw.
  */
-public class WikipediaFeedStreamTask implements StreamTask {
-  private static final SystemStream OUTPUT_STREAM = new SystemStream("kafka", "wikipedia-raw");
+public class LelyFeedStreamTask implements StreamTask {
+  private static final SystemStream OUTPUT_STREAM = new SystemStream("kafka", "Lely-raw");
 
   @Override
   public void process(IncomingMessageEnvelope envelope, MessageCollector collector, TaskCoordinator coordinator) {
-    Map<String, Object> outgoingMap = WikipediaFeedEvent.toMap((WikipediaFeedEvent) envelope.getMessage());
+    Map<String, Object> outgoingMap = LelyFeedEvent.toMap((LelyFeedEvent) envelope.getMessage());
     collector.send(new OutgoingMessageEnvelope(OUTPUT_STREAM, outgoingMap));
   }
 }

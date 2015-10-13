@@ -67,9 +67,7 @@ task distTar(dependsOn: build, type: Tar) {
     extension('tar.gz')
     into("config") {
         from("src/main/config") {
-            include "wikipedia-feed.properties"
-            include "wikipedia-parser.properties"
-            include "wikipedia-stats.properties"
+            include "lely-feeder.properties"
 
             // expand the Maven tokens with Gradle equivalents.  Also change 'target' (Maven) to 'build/distributions' (Gradle)
             filter { String line ->
@@ -148,17 +146,17 @@ class SamzaTask extends DefaultTask {
     }
 }
 
-// helper to run the Samza job to retrieve Wikipedia data
+// helper to run the Samza job to retrieve Lely data
 task runWikiFeed(dependsOn: [startGrid, deployHelloSamza], type: SamzaTask) {
     configFile("wikipedia-feed.properties")
 }
 
-// helper to run the Samza job process Wikipedia data
+// helper to run the Samza job process Lely data
 task runWikiParser(dependsOn: [startGrid, deployHelloSamza], type: SamzaTask) {
     configFile("wikipedia-parser.properties")
 }
 
-// helper to run the Samza job to summarize stats on Wikipedia edits
+// helper to run the Samza job to summarize stats on Lely edits
 task runWikiStats(dependsOn: [startGrid, deployHelloSamza], type: SamzaTask) {
     configFile("wikipedia-stats.properties")
 }
