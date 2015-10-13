@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 hello-samza
 ===========
 
@@ -12,3 +13,6 @@ Please see [Hello Samza](http://samza.apache.org/startup/hello-samza/0.9/) to ge
 ### Contribution
 
 To start contributing on [Hello Samza](http://samza.apache.org/startup/hello-samza/0.9/) first read [Rules](http://samza.apache.org/contribute/rules.html) and [Contributor Corner](https://cwiki.apache.org/confluence/display/SAMZA/Contributor%27s+Corner). Notice that [Hello Samza](http://samza.apache.org/startup/hello-samza/0.9/) git repository does not support git pull request.
+=======
+# lelyfeeder
+>>>>>>> 7f20977888c47e4ab0fcd8475b7da23e06e611d0
